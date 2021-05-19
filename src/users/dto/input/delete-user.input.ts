@@ -1,7 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { IsNotEmpty } from 'class-validator';
 
-InputType;
+@InputType()
 export class DeleteUserInput {
   @Field()
   @IsNotEmpty()
