@@ -1,0 +1,16 @@
+import { Field, InputType } from '@nestjs/graphql';
+import { IsNotEmpty } from 'class-validator';
+
+@InputType()
+export class CreateCatInput {
+  @Field()
+  @IsNotEmpty()
+  name: string;
+
+  @Field()
+  @IsNotEmpty()
+  age: number;
+
+  @Field()
+  color: string;
+}
