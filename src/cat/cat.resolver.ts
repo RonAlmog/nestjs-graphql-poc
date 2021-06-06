@@ -11,9 +11,14 @@ import { Cat } from './models/cat';
 export class CatResolver {
   constructor(private readonly catService: CatService) {}
 
-  @Query(() => Cat, { name: 'user', nullable: true })
+  @Query(() => Cat, { name: 'cat', nullable: true })
   async getCat(@Args() getCatArgs: GetCatArgs): Promise<Cat> {
     return this.catService.getCat(getCatArgs);
+  }
+
+  @Query(() => [Cat], { name: 'allcats', nullable: 'items' })
+  async getAllCats(): Promise<Cat[]> {
+    return this.catService.getAllCats();
   }
 
   @Query(() => [Cat], { name: 'cats', nullable: 'items' })

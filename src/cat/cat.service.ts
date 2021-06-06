@@ -33,6 +33,10 @@ export class CatService {
     return getCatsArgs.ids.map((id) => this.getCat({ id }));
   }
 
+  public getAllCats(): Cat[] {
+    return this.cats;
+  }
+
   public deleteCat(deleteCatInput: DeleteCatInput): Cat {
     const index = this.cats.findIndex((c) => c.id === deleteCatInput.id);
     const deletedCat = this.cats[index];
