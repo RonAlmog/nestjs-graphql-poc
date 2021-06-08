@@ -23,6 +23,12 @@ export class CatService {
     return this.catModel.find().exec();
   }
 
+  async findByName(name: string): Promise<Cat[]> {
+    return await this.catModel
+      .find({ name: { $regex: name, $options: 'i' } })
+      .exec();
+  }
+
   // ===================================================
 
   public createCat(createCatInput: CreateCatInput): Promise<Cat> {

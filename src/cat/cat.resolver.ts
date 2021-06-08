@@ -1,5 +1,6 @@
 import { Resolver, Query, Args, Mutation } from '@nestjs/graphql';
 import { CatService } from './cat.service';
+import { CatFilterArgs } from './dto/args/cat-filter.args';
 import { GetCatArgs } from './dto/args/get-cat.args';
 import { GetCatsArgs } from './dto/args/get-cats.args';
 import { CreateCatInput } from './dto/input/create-cat.input';
@@ -14,6 +15,11 @@ export class CatResolver {
   @Query(() => Cat, { name: 'cat' })
   async getCat(@Args() getCatArgs: GetCatArgs): Promise<Cat> {
     return this.catService.getCat(getCatArgs);
+  }
+
+  @Query(() => [Cat], { name: 'catByName' })
+  async getCatByName(@Args() catFilterArgs: CatFilterArgs): Promise<Cat[]> {
+    return this.catService.findByName(catFilterArgs.name);
   }
 
   // what?
