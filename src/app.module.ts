@@ -1,7 +1,12 @@
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
+import { DatabaseModule } from './database/database.module';
+import { databaseProviders } from './database/database.providers';
+//
 import { UsersModule } from './users/users.module';
 import { CatModule } from './cat/cat.module';
+
+import { catProviders } from './cat/cat.providers';
 
 @Module({
   imports: [
@@ -10,8 +15,9 @@ import { CatModule } from './cat/cat.module';
     }),
     UsersModule,
     CatModule,
+    DatabaseModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [...databaseProviders, ...catProviders],
 })
 export class AppModule {}

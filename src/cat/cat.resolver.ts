@@ -11,21 +11,18 @@ import { Cat } from './models/cat';
 export class CatResolver {
   constructor(private readonly catService: CatService) {}
 
-  @Query(() => Cat, { name: 'cat', nullable: true })
+  @Query(() => Cat, { name: 'cat' })
   async getCat(@Args() getCatArgs: GetCatArgs): Promise<Cat> {
     return this.catService.getCat(getCatArgs);
   }
 
-  @Query(() => [Cat], { name: 'allcats', nullable: 'items' })
-  async getAllCats(): Promise<Cat[]> {
-    return this.catService.getAllCats();
+  // what?
+  @Query(() => [Cat])
+  async cats() {
+    return this.catService.find();
   }
 
-  @Query(() => [Cat], { name: 'cats', nullable: 'items' })
-  async getCats(@Args() getCatsArgs: GetCatsArgs): Promise<Cat[]> {
-    return this.catService.getCats(getCatsArgs);
-  }
-
+  // create cat
   @Mutation(() => Cat)
   async createCat(
     @Args('createCatInput') createCatInput: CreateCatInput,
@@ -33,6 +30,7 @@ export class CatResolver {
     return this.catService.createCat(createCatInput);
   }
 
+  // update cat
   @Mutation(() => Cat)
   async updateCat(
     @Args('updateCatInput') updateCatInput: UpdateCatInput,
@@ -40,6 +38,7 @@ export class CatResolver {
     return this.catService.updateCat(updateCatInput);
   }
 
+  // kill a cat
   @Mutation(() => Cat)
   async deleteCat(@Args('deleteCatInput') deleteCatInput: DeleteCatInput) {
     return this.catService.deleteCat(deleteCatInput);

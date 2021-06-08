@@ -1,46 +1,46 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateCatInput } from './dto/input/create-cat.input';
 import { Cat } from './models/cat';
-import { v4 as uuidv4 } from 'uuid';
 import { UpdateCatInput } from './dto/input/update-cat.input';
 import { GetCatArgs } from './dto/args/get-cat.args';
 import { GetCatsArgs } from './dto/args/get-cats.args';
 import { DeleteCatInput } from './dto/input/delete-cat.input';
+import { Model, FilterQuery } from 'mongoose';
 
 @Injectable()
 export class CatService {
-  private cats: Cat[] = [];
-  public createCat(createCatInput: CreateCatInput): Cat {
-    const cat: Cat = {
-      id: uuidv4(),
-      ...createCatInput,
-    };
-    this.cats.push(cat);
-    return cat;
+  constructor(@Inject('CAT_MODEL') private catModel: Model<Cat>) {}
+
+  async create(createCatInput: CreateCatInput): Promise<Cat> {
+    return this.catModel.create(createCatInput);
   }
 
-  public updateCat(updateCatInput: UpdateCatInput): Cat {
-    const cat = this.cats.find((cat) => cat.id === updateCatInput.id);
-    Object.assign(cat, updateCatInput);
-    return cat;
+  async findOne(query: FilterQuery<Cat>): Promise<Cat> {
+    return this.catModel.findOne(query).lean();
   }
 
-  public getCat(getCatArgs: GetCatArgs): Cat {
-    return this.cats.find((cat) => cat.id === getCatArgs.id);
+  async find(): Promise<Cat[]> {
+    return this.catModel.find().exec();
   }
 
-  public getCats(getCatsArgs: GetCatsArgs): Cat[] {
-    return getCatsArgs.ids.map((id) => this.getCat({ id }));
+  // ===================================================
+
+  public createCat(createCatInput: CreateCatInput): Promise<Cat> {
+    return this.catModel.create(createCatInput);
   }
 
-  public getAllCats(): Cat[] {
-    return this.cats;
+  async updateCat(updateCatInput: UpdateCatInput): Promise<Cat> {
+    return await this.catModel.findByIdAndUpdate(
+      updateCatInput.id,
+      updateCatInput,
+    );
   }
 
-  public deleteCat(deleteCatInput: DeleteCatInput): Cat {
-    const index = this.cats.findIndex((c) => c.id === deleteCatInput.id);
-    const deletedCat = this.cats[index];
-    this.cats.splice(index);
-    return deletedCat;
+  async getCat(getCatArgs: GetCatArgs): Promise<Cat> {
+    return await this.catModel.findById(getCatArgs.id);
+  }
+
+  async deleteCat(deleteCatInput: DeleteCatInput): Promise<Cat> {
+    return await this.catModel.findByIdAndRemove(deleteCatInput.id);
   }
 }
