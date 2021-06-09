@@ -1,4 +1,4 @@
-import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
+import { Extensions, Field, ID, Int, ObjectType } from '@nestjs/graphql';
 import * as mongoose from 'mongoose';
 import { Document } from 'mongoose';
 
@@ -17,5 +17,6 @@ export class Cat extends Document {
   @Field(() => Int)
   age: number;
   @Field({ nullable: true })
+  @Extensions({ role: 'admin' })
   color: string;
 }
