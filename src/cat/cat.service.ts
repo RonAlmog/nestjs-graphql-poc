@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateCatInput } from './dto/input/create-cat.input';
 import { Cat } from './models/cat';
 import { UpdateCatInput } from './dto/input/update-cat.input';
@@ -6,10 +6,11 @@ import { GetCatArgs } from './dto/args/get-cat.args';
 import { GetCatsArgs } from './dto/args/get-cats.args';
 import { DeleteCatInput } from './dto/input/delete-cat.input';
 import { Model, FilterQuery } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
 export class CatService {
-  constructor(@Inject('CAT_MODEL') private catModel: Model<Cat>) {}
+  constructor(@InjectModel('Cat') private readonly catModel: Model<Cat>) {}
 
   async create(createCatInput: CreateCatInput): Promise<Cat> {
     return this.catModel.create(createCatInput);
