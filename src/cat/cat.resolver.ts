@@ -22,7 +22,7 @@ export class CatResolver {
     return this.catService.findByName(catFilterArgs.name);
   }
 
-  // what?
+  // all cats
   @Query(() => [Cat])
   async cats() {
     return this.catService.find();

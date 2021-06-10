@@ -13,7 +13,7 @@ export class CatService {
   constructor(@InjectModel('Cat') private readonly catModel: Model<Cat>) {}
 
   async create(createCatInput: CreateCatInput): Promise<Cat> {
-    return this.catModel.create(createCatInput);
+    return await this.catModel.create(createCatInput);
   }
 
   async findOne(query: FilterQuery<Cat>): Promise<Cat> {
@@ -21,7 +21,7 @@ export class CatService {
   }
 
   async find(): Promise<Cat[]> {
-    return this.catModel.find().exec();
+    return await this.catModel.find().exec();
   }
 
   async findByName(name: string): Promise<Cat[]> {
